@@ -1,0 +1,62 @@
+<form #form="ngForm" novalidate class="d-flex flex-column align-items-center">
+  <div class="content-titles">
+    <h1 class="fw-bold custom-title">Geração de certificado</h1>
+    <p class="mb-4 custom-subtitle">Preencha os dados para gerar um novo certificado</p>
+  </div>
+
+
+  <div class="custom-card w-100">
+
+    <h2 class="card-title">Novo certificado</h2>
+
+
+
+
+
+    <div class="mb-3 custom-input-group">
+      <label [ngClass]="{'text-danger-label': campoInvalido(nameRef)}" for="nome" class="form-label">Nome</label>
+      <input [(ngModel)]="certificado.name" name="name" #nameRef="ngModel" maxlength="150" required type="text"
+        class="form-control custom-input" placeholder="Nome do aluno" id="nome">
+
+      @if(campoInvalido(nameRef)){
+      <div class="error-message d-flex align-items-center">
+        <i class="ph ph-warning-circle"></i>
+        <p class="m-0">Nome do aluno é obrigatorio</p>
+      </div>
+      }
+
+    </div>
+
+    <div class="mb-3 d-flex align-items-end custom-input-group">
+      <div class="flex-grow-1 me-2">
+        <label for="atividade"  class="form-label">Atividades</label>
+        <input  name="atividade" [(ngModel)]="atividade"  id="atividade" type="text" maxlength="50" required class="form-control custom-input" placeholder="Atividades exercida">
+
+      </div>
+      <app-secondary-button (click)="adicionaratividade()" textoBotao="Adicionar" phClass="ph ph-plus"></app-secondary-button>
+    </div>
+
+
+    <div class="atividade-group">
+      <label class="form-label">Lista de Atividades</label>
+      <div class="item-list w-100">
+
+        @for (atividade of certificado.atividades; track $index) {
+        <div class="item">
+          <span class="item-text">{{atividade}}</span>
+          <div (click)="removeAtividade($index)" class="remove-btn">
+            <i class="ph ph-x"></i>
+          </div>
+        </div>
+        @if ($index + 1 != certificado.atividades.length) {
+        <hr />
+        }
+        }
+
+      </div>
+    </div>
+    <app-primary-button (click)="submit()" [disabled]="!formValido()" [textoBotao]="'Gerar certificado'"></app-primary-button>
+
+
+  </div>
+</form>
